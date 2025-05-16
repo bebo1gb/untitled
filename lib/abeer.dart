@@ -32,7 +32,29 @@ class CarCalculatorApp extends StatelessWidget {
           bodyMedium: TextStyle(color: Colors.black87),
         ),
       ),
-      home: CarCalculatorPage(),
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Page'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CarCalculatorPage()),
+            );
+          },
+          child: Text('Enter Car Calculator'),
+        ),
+      ),
     );
   }
 }
@@ -56,7 +78,7 @@ class _CarCalculatorPageState extends State<CarCalculatorPage> {
     {'label': '12 months - 8% interest', 'value': 12, 'rate': 8.0},
     {'label': '24 months - 12% interest', 'value': 24, 'rate': 12.0},
     {'label': '36 months - 16% interest', 'value': 36, 'rate': 16.0},
-    {'label': '48 months - 20% interest ❗', 'value': 48, 'rate': 20.0},
+    {'label': '48 months - 20% interest', 'value': 48, 'rate': 20.0},
   ];
 
   void _calculateAffordability() {
@@ -74,7 +96,8 @@ class _CarCalculatorPageState extends State<CarCalculatorPage> {
 
     final maxAffordablePayment = monthlyIncome * (rateLimit / 100);
     final selectedOption = _installmentOptions.firstWhere(
-            (option) => option['value'] == _installmentMonths);
+          (option) => option['value'] == _installmentMonths,
+    );
     final interestRate = selectedOption['rate'] / 100 / 12;
     final n = _installmentMonths;
     final loanAmount = carPrice - downPayment;
@@ -105,6 +128,12 @@ class _CarCalculatorPageState extends State<CarCalculatorPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Car Affordability Calculator'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -189,8 +218,7 @@ class _CarCalculatorPageState extends State<CarCalculatorPage> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color:
-                      _result.contains('❌') ? Colors.red : Colors.green[800],
+                      color: _result.contains('❌') ? Colors.red : Colors.green[800],
                     ),
                     textAlign: TextAlign.center,
                   ),
